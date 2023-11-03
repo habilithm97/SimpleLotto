@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">심플로또</string>
+    <string name="main_text">랜덤 로또 번호 추첨</string>
+    <string name="run_button">실행하기</string>
+</resources>

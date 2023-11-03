@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">SimpleLotto</string>
+    <string name="main_text">Random Lotto Number Lottery</string>
+    <string name="run_button">Run</string>
 </resources>
