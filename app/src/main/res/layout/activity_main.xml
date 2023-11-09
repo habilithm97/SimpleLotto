@@ -31,7 +31,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tvMain">
 
         <TextView
-            android:id="@+id/num1"
+            android:id="@+id/ball1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
@@ -43,7 +43,7 @@
             android:background="@drawable/ball"/>
 
         <TextView
-            android:id="@+id/num2"
+            android:id="@+id/ball2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
@@ -55,7 +55,7 @@
             android:background="@drawable/ball"/>
 
         <TextView
-            android:id="@+id/num3"
+            android:id="@+id/ball3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
@@ -67,7 +67,7 @@
             android:background="@drawable/ball"/>
 
         <TextView
-            android:id="@+id/num4"
+            android:id="@+id/ball4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
@@ -79,7 +79,7 @@
             android:background="@drawable/ball"/>
 
         <TextView
-            android:id="@+id/num5"
+            android:id="@+id/ball5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
@@ -91,7 +91,7 @@
             android:background="@drawable/ball"/>
 
         <TextView
-            android:id="@+id/num6"
+            android:id="@+id/ball6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"

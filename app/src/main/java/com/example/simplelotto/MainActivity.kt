@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity() {
         binding.btnRun.setOnClickListener {
             val lottoNums = createLottoNumber()
             Log.d("TAG", lottoNums.toString())
+            setLottoNums(lottoNums)
         }
     }
 
@@ -32,5 +33,16 @@ class MainActivity : AppCompatActivity() {
         result.sort()
 
         return result
+    }
+
+    private fun setLottoNums(result: List<Int>) {
+        with(binding) {
+            ball1.text = result[0].toString()
+            ball2.text = result[1].toString()
+            ball3.text = result[2].toString()
+            ball4.text = result[3].toString()
+            ball5.text = result[4].toString()
+            ball6.text = result[5].toString()
+        }
     }
 }
