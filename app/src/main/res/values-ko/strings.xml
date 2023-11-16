@@ -3,4 +3,7 @@
     <string name="app_name">심플로또</string>
     <string name="title1">랜덤 로또 번호 추첨</string>
     <string name="button1">생성하기</string>
+    <string name="title2">당첨번호 조회</string>
+    <string name="hint">회차를 입력하세요.</string>
+    <string name="button2">조회하기</string>
 </resources>
