@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">SimpleLotto</string>
-    <string name="main_text">Random Lotto Number Lottery</string>
-    <string name="run_button">Run</string>
+    <string name="title1">Random Lotto Number Lottery</string>
+    <string name="button1">Create</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
