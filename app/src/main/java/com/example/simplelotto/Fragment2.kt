@@ -18,6 +18,8 @@ class Fragment2 : Fragment() {
     }
 
     private fun initView() {
+        binding.btnCheck.setOnClickListener {
 
+        }
     }
 }

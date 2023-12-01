@@ -5,4 +5,6 @@
     <string name="title2">Check the winning number</string>
     <string name="hint">Please enter the round.</string>
     <string name="button2">Check</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
