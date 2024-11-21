@@ -6,12 +6,19 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import com.example.simplelotto.databinding.Fragment1Binding
 import kotlin.random.Random
 
 class Fragment1 : Fragment() {
     private var _binding: Fragment1Binding? = null
     private val binding get() = _binding!!
+
+    private val ballList : List<TextView> by lazy {
+        with(binding) {
+            listOf(ball1, ball2, ball3, ball4, ball5, ball6)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,7 +34,8 @@ class Fragment1 : Fragment() {
         binding.apply {
             btn.setOnClickListener {
                 val lottoNumbers = createLottoNumbers()
-                Log.d("Fragment1", lottoNumbers.toString())
+                //Log.d("Fragment1", lottoNumbers.toString())
+                setLottoNumbers(lottoNumbers)
             }
         }
     }
@@ -35,11 +43,18 @@ class Fragment1 : Fragment() {
     private fun createLottoNumbers() : List<Int> {
         val result = mutableListOf<Int>()
         val numbers = IntArray(45) { it + 1 }
-        numbers.shuffle(Random(System.currentTimeMillis()))
-        numbers.slice(0..5).forEach { number -> result.add(number) }
+        numbers.apply {
+            shuffle(Random(System.currentTimeMillis()))
+            slice(0..5).forEach { number -> result.add(number) }
+        }
         result.sort()
-
         return result
+    }
+
+    private fun setLottoNumbers(result: List<Int>) {
+        ballList.forEachIndexed { index, textView ->
+            textView.text = result[index].toString()
+        }
     }
 
     override fun onDestroyView() {
