@@ -1,6 +1,7 @@
 package com.example.simplelotto.ui.fragment
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -19,6 +20,9 @@ import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.temporal.ChronoUnit
+import java.util.Calendar
 import java.util.Locale
 
 class Fragment2 : Fragment() {
@@ -63,6 +67,8 @@ class Fragment2 : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        getLatestLottoResult() // 가장 최근 회차 표시
+
         binding.apply {
             btn.setOnClickListener {
                 val round = edt.text.toString()
@@ -73,6 +79,28 @@ class Fragment2 : Fragment() {
                 }
             }
         }
+    }
+
+    private fun getLatestLottoResult() {
+        val latestRound = calculateLatestRound() // 가장 최근 회차 계산
+        getLottoResult(latestRound)
+    }
+
+    private fun calculateLatestRound(): Int {
+        // 1회차 추첨일 설정
+        val firstDrawDate = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            LocalDate.of(2002, 12, 7)
+        } else {
+            TODO("VERSION.SDK_INT < O")
+        }
+        val date = LocalDate.now()
+        // 1회차 추첨일로부터 현재 날짜까지의 경과 주 수 계산
+        val weeksElapsed = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            ChronoUnit.WEEKS.between(firstDrawDate, date)
+        } else {
+            TODO("VERSION.SDK_INT < O")
+        }
+        return (weeksElapsed + 1).toInt()  // 1회차부터 시작하므로 경과 주 수에 1을 더함
     }
 
     private fun getLottoResult(round: Int) {
