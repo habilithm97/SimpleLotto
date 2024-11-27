@@ -18,6 +18,8 @@ import com.example.simplelotto.ui.activity.MainActivity
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class Fragment2 : Fragment() {
     private var _binding: Fragment2Binding? = null
@@ -94,16 +96,19 @@ class Fragment2 : Fragment() {
     }
 
     private fun setLottoResult(lottoResponse: LottoResponse) {
+        val drwtNoList = with(lottoResponse) {
+            listOf(drwtNo1, drwtNo2, drwtNo3, drwtNo4, drwtNo5, drwtNo6, bnusNo)
+        }
         binding.apply {
-            // 당첨 번호 리스트
-            val drwtNoList = with(lottoResponse) {
-                listOf(drwtNo1, drwtNo2, drwtNo3, drwtNo4, drwtNo5, drwtNo6, bnusNo)
-            }
             ballList.forEachIndexed { index, textView ->
                 val number = drwtNoList[index]
                 textView.text = number.toString()
                 setBallColor(number, textView)
             }
+            val round = lottoResponse.drwNo.toString()
+            val drwNoDate = lottoResponse.drwNoDate
+            tvRound.text = "${round}회차"
+            tvDate.text = drwNoDate
         }
     }
 
