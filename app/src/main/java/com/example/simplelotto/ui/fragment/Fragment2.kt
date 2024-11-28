@@ -27,6 +27,7 @@ class Fragment2 : Fragment() {
     private val binding get() = _binding!!
     private var toast: Toast? = null
     private lateinit var mContext: MainActivity
+    private var latestRound: Int = -1
 
     private val retrofit by lazy {
         Retrofit.Builder()
@@ -79,7 +80,7 @@ class Fragment2 : Fragment() {
     }
 
     private fun getLatestLottoResult() {
-        val latestRound = calculateLatestRound() // 가장 최근 회차 계산
+        latestRound = calculateLatestRound() // 가장 최근 회차 계산
         getLottoResult(latestRound)
     }
 
@@ -101,6 +102,11 @@ class Fragment2 : Fragment() {
     }
 
     private fun getLottoResult(round: Int) {
+        if (round == 0 || round > latestRound) {
+            showToast(requireContext(), "유효하지 않은 회차입니다.")
+            return
+        }
+
         lifecycleScope.launch { // 비동기적 네트워크 요청 처리
             try {
                 val response = lottoApiService.getLottoNumbers(drawNo = round)
