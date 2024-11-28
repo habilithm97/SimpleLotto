@@ -25,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:text="-회차"
+        android:text="-"
         android:textColor="@color/black"
         android:textSize="40sp"
         android:textStyle="bold"
@@ -203,4 +203,28 @@
             android:src="@drawable/search" />
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvPrizeAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="1등 당첨금 3,323,422,079원"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linear" />
+
+    <TextView
+        android:id="@+id/tvPrizeWinners"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="(당첨 복권 수 8개)"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvPrizeAmount" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

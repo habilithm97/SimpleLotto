@@ -19,11 +19,8 @@ import com.example.simplelotto.ui.activity.MainActivity
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
-import java.util.Calendar
-import java.util.Locale
 
 class Fragment2 : Fragment() {
     private var _binding: Fragment2Binding? = null
@@ -133,10 +130,20 @@ class Fragment2 : Fragment() {
                 textView.text = number.toString()
                 setBallColor(number, textView)
             }
+            // 회차
             val round = lottoResponse.drwNo.toString()
-            val drwNoDate = lottoResponse.drwNoDate
             tvRound.text = "${round}회차"
+
+            // 날짜
+            val drwNoDate = lottoResponse.drwNoDate
             tvDate.text = drwNoDate
+
+            // 당첨금
+            val prizeAmount = lottoResponse.firstWinamnt.toString()
+            val format = prizeAmount.toLongOrNull()?.let {
+                String.format("%,d", it)
+            } ?: "0"
+            tvPrizeAmount.text = "1등 당첨금 ${format}원"
         }
     }
 
