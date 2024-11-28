@@ -140,10 +140,17 @@ class Fragment2 : Fragment() {
 
             // 당첨금
             val prizeAmount = lottoResponse.firstWinamnt.toString()
-            val format = prizeAmount.toLongOrNull()?.let {
+            val format1 = prizeAmount.toLongOrNull()?.let {
                 String.format("%,d", it)
             } ?: "0"
-            tvPrizeAmount.text = "1등 당첨금 ${format}원"
+            tvPrizeAmount.text = "1등 당첨금 ${format1}원"
+
+            // 당첨 수
+            val prizeWinners = lottoResponse.firstPrzwnerCo.toString()
+            val format2 = prizeWinners.toIntOrNull()?.let {
+                String.format("%,d", it)
+            } ?: "0"
+            tvPrizeWinners.text = "당첨 복권 수 : ${format2}개"
         }
     }
 
