@@ -2,7 +2,6 @@ package com.example.simplelotto.ui.fragment
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,8 +14,9 @@ import com.example.simplelotto.ui.activity.MainActivity
 import kotlin.random.Random
 
 class Fragment1 : Fragment() {
-    private var _binding: Fragment1Binding? = null
-    private val binding get() = _binding!!
+    private var _binding: Fragment1Binding? = null // 뷰 소멸 시 메모리 릭 방지
+    private val binding get() = _binding!! // 뷰 생명주기 동안 바인딩 객체에 안전하게 접근
+
     private lateinit var mContext: MainActivity
 
     private val ballList : List<TextView> by lazy {
@@ -56,19 +56,15 @@ class Fragment1 : Fragment() {
     }
 
     private fun createLottoNumbers() : List<Int> {
-        val result = mutableListOf<Int>()
-        val numbers = IntArray(45) { it + 1 }
-        numbers.apply {
-            shuffle(Random(System.currentTimeMillis()))
-            slice(0..5).forEach { number -> result.add(number) }
-        }
-        result.sort()
-        return result
+        return (1..45).toList()
+            .shuffled()
+            .take(6) // 상위 6개 선택
+            .sorted() // 오름차순 정렬
     }
 
     private fun setLottoNumbers(result: List<Int>) {
-        ballList.forEachIndexed { index, textView ->
-            textView.text = result[index].toString()
+        ballList.zip(result) { textView, number ->
+            textView.text = number.toString()
         }
     }
 

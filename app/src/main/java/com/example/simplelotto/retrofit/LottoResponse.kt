@@ -1,7 +1,7 @@
 package com.example.simplelotto.retrofit
 
-// 동행복권 API에서 반환하는 JSON 데이터를 코틀린에서 매핑
-// -> 클래스의 각 속성은 API 응답 필드에 해당
+// API 응답 데이터를 매핑하기 위한 데이터 클래스
+// -> 클래스의 각 속성은 API 응답에서 제공되는 JSON 필드와 대응
 data class LottoResponse(
     val drwNo: Int,
     val drwNoDate: String,
@@ -12,6 +12,6 @@ data class LottoResponse(
     val drwtNo5: Int,
     val drwtNo6: Int,
     val bnusNo: Int,
-    val firstWinamnt: Long,
-    val firstPrzwnerCo: Int
+    val firstWinamnt: Long, // 1등 당첨금
+    val firstPrzwnerCo: Int // 1등 당첨 복권수
 )

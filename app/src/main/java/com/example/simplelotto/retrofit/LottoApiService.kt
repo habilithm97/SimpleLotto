@@ -9,5 +9,5 @@ interface LottoApiService {
     suspend fun getLottoNumbers(
         @Query("method") method: String = "getLottoNumber", // 파라미터의 기본값
         @Query("drwNo") drawNo: Int
-    ): Response<LottoResponse> // 서버에서 반환된 데이터를 포함하는 Retrofit의 응답 객체
+    ): Response<LottoResponse> // 서버에서 반환된 데이터를 포함하는 응답 객체
 }

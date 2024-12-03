@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity() {
             insets
         }
         init()
+
         if (savedInstanceState == null) {
             replaceFragment(Fragment1())
         }

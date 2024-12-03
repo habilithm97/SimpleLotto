@@ -25,27 +25,28 @@ import java.time.temporal.ChronoUnit
 class Fragment2 : Fragment() {
     private var _binding: Fragment2Binding? = null
     private val binding get() = _binding!!
+
     private var toast: Toast? = null
     private lateinit var mContext: MainActivity
-    private var latestRound: Int = -1
-
-    private val retrofit by lazy {
-        Retrofit.Builder()
-            .baseUrl("https://www.dhlottery.co.kr/") // 동행복권 API의 기본 URL
-            // Gson을 사용해 JSON 데이터를 코틀린 객체로 변환
-            .addConverterFactory(GsonConverterFactory.create())
-            .build() // Retrofit 인스턴스 생성
-    }
-
-    private val lottoApiService by lazy {
-        // Retrofit 인터페이스 구현체 생성
-        retrofit.create(LottoApiService::class.java)
-    }
+    private var latestRound = -1
 
     private val ballList : List<TextView> by lazy {
         with(binding) {
             listOf(ball1, ball2, ball3, ball4, ball5, ball6, ball7)
         }
+    }
+
+    private val retrofit by lazy {
+        Retrofit.Builder()
+            .baseUrl("https://www.dhlottery.co.kr/")
+            // Gson을 사용해 JSON 데이터를 코틀린 객체로 변환
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+    private val lottoApiService by lazy {
+        // Retrofit 인터페이스 구현체 생성
+        retrofit.create(LottoApiService::class.java)
     }
 
     override fun onAttach(context: Context) {
@@ -70,10 +71,11 @@ class Fragment2 : Fragment() {
         binding.apply {
             btn.setOnClickListener {
                 val round = edt.text.toString()
+
                 if (round.isNotBlank()) {
                     getLottoResult(round.toInt())
                 } else {
-                    showToast(requireContext(), "회차 번호를 입력하세요. ")
+                    showToast(requireContext(), "회차를 입력하세요. ")
                 }
             }
         }
@@ -85,36 +87,31 @@ class Fragment2 : Fragment() {
     }
 
     private fun calculateLatestRound(): Int {
-        // 1회차 추첨일 설정
-        val firstDrawDate = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            LocalDate.of(2002, 12, 7)
-        } else {
-            TODO("VERSION.SDK_INT < O")
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            throw UnsupportedOperationException("VERSION.SDK_INT < O is not supported")
         }
+        val firstDrawDate = LocalDate.of(2002, 12, 7) // 1회차 추첨일
         val date = LocalDate.now()
-        // 1회차 추첨일로부터 현재 날짜까지의 경과 주 수 계산
-        val weeksElapsed = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            ChronoUnit.WEEKS.between(firstDrawDate, date)
-        } else {
-            TODO("VERSION.SDK_INT < O")
-        }
-        return (weeksElapsed + 1).toInt()  // 1회차부터 시작하므로 경과 주 수에 1을 더함
+        // 추첨 시작일과 현재 날짜를 비교하여 경과 주를 계산
+        val weeksElapsed = ChronoUnit.WEEKS.between(firstDrawDate, date)
+
+        return (weeksElapsed + 1).toInt() // 1회차부터 시작하므로 1을 더함
     }
 
     private fun getLottoResult(round: Int) {
-        if (round == 0 || round > latestRound) {
+        if (round <= 0 || round > latestRound) {
             showToast(requireContext(), "유효하지 않은 회차입니다.")
             return
         }
-
         lifecycleScope.launch { // 비동기적 네트워크 요청 처리
             try {
                 val response = lottoApiService.getLottoNumbers(drawNo = round)
+
                 if (response.isSuccessful) {
                     // 응답의 body를 확인하여 데이터가 존재할 경우 처리
                     response.body()?.let { lottoResponse ->
                         setLottoResult(lottoResponse)
-                    } ?: run { // 응답 body가 null인 경우
+                    } ?: run { // 응답의 body가 null인 경우
                         showToast(requireContext(), "데이터를 가져오지 못했습니다. ")
                     }
                 } else {
@@ -131,32 +128,24 @@ class Fragment2 : Fragment() {
             listOf(drwtNo1, drwtNo2, drwtNo3, drwtNo4, drwtNo5, drwtNo6, bnusNo)
         }
         binding.apply {
-            ballList.forEachIndexed { index, textView ->
-                val number = drwtNoList[index]
+            ballList.zip(drwtNoList) { textView, number ->
                 textView.text = number.toString()
                 setBallColor(number, textView)
             }
-            // 회차
-            val round = lottoResponse.drwNo.toString()
-            tvRound.text = "${round}회차"
-
-            // 날짜
-            val drwNoDate = lottoResponse.drwNoDate
-            tvDate.text = drwNoDate
+            tvRound.text = "${lottoResponse.drwNo}회차" // 회차
+            tvDate.text = lottoResponse.drwNoDate  // 날짜
 
             // 당첨금
-            val prizeAmount = lottoResponse.firstWinamnt.toString()
-            val format1 = prizeAmount.toLongOrNull()?.let {
-                String.format("%,d", it)
-            } ?: "0"
-            tvPrizeAmount.text = "1등 당첨금 ${format1}원"
+            val prizeAmount = lottoResponse.firstWinamnt
+                .takeIf { it > 0 }
+                ?.let { String.format("%,d", it) } ?: "0"
+            tvPrizeAmount.text = "1등 당첨금 ${prizeAmount}원"
 
-            // 당첨 수
-            val prizeWinners = lottoResponse.firstPrzwnerCo.toString()
-            val format2 = prizeWinners.toIntOrNull()?.let {
-                String.format("%,d", it)
-            } ?: "0"
-            tvPrizeWinners.text = "당첨 복권 수 : ${format2}개"
+            // 당첨 복권 수
+            val prizeWinners = lottoResponse.firstPrzwnerCo
+                .takeIf { it > 0 }
+                ?.let { String.format("%,d", it) } ?: "0"
+            tvPrizeWinners.text = "당첨 복권 수 : ${prizeWinners}개"
         }
     }
 
