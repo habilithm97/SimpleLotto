@@ -47,9 +47,9 @@ class Fragment1 : Fragment() {
                 val lottoNumbers = createLottoNumbers()
                 setLottoNumbers(lottoNumbers)
 
-                lottoNumbers.forEachIndexed { index, number ->
-                    val ball = ballList[index]
-                    setBallColor(number, ball)
+                ballList.zip(lottoNumbers) { textView, number ->
+                    textView.text = number.toString()
+                    setBallColor(number, textView)
                 }
             }
         }

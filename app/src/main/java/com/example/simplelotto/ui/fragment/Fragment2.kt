@@ -145,7 +145,7 @@ class Fragment2 : Fragment() {
             val prizeWinners = lottoResponse.firstPrzwnerCo
                 .takeIf { it > 0 }
                 ?.let { String.format("%,d", it) } ?: "0"
-            tvPrizeWinners.text = "당첨 복권 수 : ${prizeWinners}개"
+            tvPrizeWinners.text = "당첨 복권수 : ${prizeWinners}개"
         }
     }
 
